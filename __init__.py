@@ -29,38 +29,6 @@ def meteo():
 @app.route("/rapport/")
 def mongraphique():
     return render_template("graphique.html")
-@app.route("/commits/")
-def mescommits():
-import requests
-url = "https://api.github.com/repos/NaderMR/5MCSI_Metriques/commits"
-response = requests.get(url)
-commits = response.json()
-from collections import defaultdict
-from datetime import datetime
-# Organiser les commits par date
-commits_per_day = defaultdict(int)
-for commit in commits:
-    date_str = commit['commit']['committer']['date']
-    date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ').date()
-    commits_per_day[date] += 1
-import matplotlib.pyplot as plt
-
-# Dates et nombres de commits
-dates = list(commits_per_day.keys())
-commit_counts = [commits_per_day[date] for date in dates]
-
-# Créer le graphique
-plt.figure(figsize=(10, 6))
-plt.plot(dates, commit_counts, marker='o')
-plt.title('Commits par Jour')
-plt.xlabel('Date')
-plt.ylabel('Nombre de Commits')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
-return 0
-
-
 
 
 if __name__ == "__main__":
