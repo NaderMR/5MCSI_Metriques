@@ -34,6 +34,52 @@ def extract_minutes(date_string):
         date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
         minutes = date_object.minute
         return jsonify({'minutes': minutes})
+@app.route('/commit_graph')
+def commit_graph():
+    
+    url = "https://api.github.com/repos/NaderMR/5MCSI_Metriques/commits"
+    response = urlopen(url, context=context)
+    data = json.loads(response.read())
+
+    commits = [{'date': commit['commit']['author']['date'], 'message': commit['commit']['message']} for commit in data]
+
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Commit Graph</title>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Date');
+                data.addColumn('number', 'Commits');
+
+                data.addRows({{ commit_data }});
+
+                var options = {
+                    title: 'Commits Over Time',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                chart.draw(data, options);
+            }
+        </script>
+    </head>
+    <body>
+        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    </body>
+    </html>
+    """.replace("{{ commit_data }}", str([list(item.values()) for item in commits]))
+
+    return render_template_string(html)
+
   
 
 
