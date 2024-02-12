@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Temperature Histogram from OpenWeatherMap</title>
+    <title>Metrique</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
@@ -12,37 +12,29 @@
 
       function drawBackgroundColor() {
         function drawChart(data) {
-          // Convert the fetched data into a DataTable
           var dataTable = new google.visualization.DataTable();
           dataTable.addColumn('string', 'Date');
-          dataTable.addColumn('number', 'Temperature');
-
-          // Process each forecast entry
-          data.list.forEach(entry => {
-            var date = new Date(entry.dt * 1000); // Convert timestamp to Date
-            var temp = entry.main.temp; // Get temperature
-            dataTable.addRow([date.toLocaleDateString(), temp]);
+          dataTable.addColumn('number', 'Valeur');
+          data.results.forEach(entry => {
+            var date = new Date(entry.Jour * 1000);
+            dataTable.addRow([date.toLocaleDateString(), entry.temp]);
           });
 
-          // Histogram options
           var options = {
-            title: 'Temperature Distribution from OpenWeatherMap Forecast',
+            title: 'Distribution des températures de Paris pour les 16 prochains jours',
             legend: { position: 'none' },
-            histogram: { bucketSize: 2 } // Adjust based on desired temperature range granularity
+            histogram: { bucketSize: 2 }
           };
 
-          // Create and draw the histogram
           var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
           chart.draw(dataTable, options);
         }
 
-        // Fetch data from OpenWeatherMap API
-        fetch('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
+        fetch('/paris/')
           .then(response => response.json())
           .then(data => {
             drawChart(data);
-          })
-          .catch(error => console.error('Error fetching data:', error));
+          });
       }
     </script>
   </body>
