@@ -26,15 +26,23 @@ def meteo():
         temp_day_value = list_element.get('temp', {}).get('day') - 273.15 # Conversion de Kelvin en °c 
         results.append({'Jour': dt_value, 'temp': temp_day_value})
     return jsonify(results=results)
+
+
 @app.route("/rapport/")
 def mongraphique():
     return render_template("graphique.html")
+
+
+
 @app.route('/extract-minutes/<date_string>')
 def extract_minutes(date_string):
         date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
         minutes = date_object.minute
         return jsonify({'minutes': minutes})
-@app.route('/commit/')
+
+
+
+@app.route('/commits/')
 def commit_graph():
     
     url = "https://api.github.com/repos/NaderMR/5MCSI_Metriques/commits"
