@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Metrique Histogram</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+  <body>
+    <div id="chart_div"></div>
+    <script>
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
+
+      function drawBackgroundColor() {
+        function drawChart(data) {
+          // Convert the fetched data into an array suitable for Google Charts
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Date');
+          dataTable.addColumn('number', 'Temperature');
+
+          data.results.forEach(entry => {
+            var date = new Date(entry.Jour * 1000);
+            dataTable.addRow([date.toLocaleDateString(), entry.temp]);
+          });
+
+          // Configure the options for the histogram
+          var options = {
+            title: 'Temperature Distribution in Paris for the Next 16 Days',
+            legend: { position: 'none' },
+            histogram: { bucketSize: 2 } // Adjust bucket size as needed for data range
+          };
+
+          // Use the Histogram chart type
+          var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+          chart.draw(dataTable, options);
+        }
+
+        // Fetch data from our API /paris/
+        fetch('/paris/')
+          .then(response => response.json())
+          .then(data => {
+            drawChart(data);
+          });
+      }
+    </script>
+  </body>
+</html>
