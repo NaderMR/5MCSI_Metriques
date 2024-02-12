@@ -4,6 +4,7 @@ from flask import json
 from datetime import datetime
 from urllib.request import urlopen
 import sqlite3
+import ssl
                                                                                                                                        
 app = Flask(__name__)
 
@@ -44,7 +45,7 @@ def extract_minutes(date_string):
 
 @app.route('/commits/')
 def commit_graph():
-    
+    context = ssl._create_unverified_context()
     url = "https://api.github.com/repos/NaderMR/5MCSI_Metriques/commits"
     response = urlopen(url, context=context)
     data = json.loads(response.read())
