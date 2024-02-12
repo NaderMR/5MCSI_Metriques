@@ -29,7 +29,7 @@ def meteo():
 @app.route("/rapport/")
 def mongraphique():
     return render_template("graphique.html")
-app.route("/commits/")
+@app.route("/commits/")
 def mescommits():
 import requests
 url = "https://api.github.com/repos/NaderMR/5MCSI_Metriques/commits"
