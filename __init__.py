@@ -44,6 +44,21 @@ def extract_minutes(date_string):
         minutes = date_object.minute
         return jsonify({'minutes': minutes})
 
+@app.route("/commit/")
+def hello():
+  url = "https://api.github.com/repos/NaderMR/5MCSI_Metriques/commits"
+  response = urlopen(url)
+  data = response.read()
+  commits_data = json.loads(data)
+
+  for commit in commits_data:
+    commit_hash = commit['sha']
+    author_name = commit['commit']['author']['name'] if commit.get('commit', {}).get('author', {}) else 'No Author'
+    author_email = commit['commit']['author']['email'] if commit.get('commit', {}).get('author', {}) else 'No Email'
+    date = commit['commit']['author']['date'] if commit.get('commit', {}).get('author', {}) else 'No Date'
+  print(f"Commit: {commit_hash}, Author: {author_name} ({author_email}), Date: {date}")
+
+return jsonify(results=results)
 
 
 
