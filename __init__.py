@@ -43,14 +43,6 @@ def extract_minutes(date_string):
         minutes = date_object.minute
         return jsonify({'minutes': minutes})
 
-@app.route('commits')
-def nombre_commits():
-  api_url = 'https://api.github.com/repos/NaderMR/5MCSI_Metriques/commits'
-  response = urlopen(api_url)
-  commits_data = json.loads(response.read().decode('utf-8'))
-  nombre_de_commits = len(commits_data)
-  return jsonify({'nombre_de_commits': nombre_de_commits})
-
   
 
 
