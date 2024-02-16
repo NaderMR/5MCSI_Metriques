@@ -14,11 +14,11 @@
 <p>Objectif : Savoir créer des routes (c'est à dire la création d'une nouvelle API)</p>
 L'exercice consiste à créer une nouvelle route accèssible depuis "/contact/" de votre site et qui affichera "Ma page de contact" dans le navigateur de l'internaute.
 L'internaute saisira l'adresse suivante dans son navigateur : <b>https://{Votre URL}/contact/</b> et obtiendra donc le résultat "Ma page de contact". Vous allez pour cela, depuis GitHUB, ajouter le code suivant dans votre fichier <b>__init__.py</b> qui est à la racine de votre Repository précédemment créé :
-<pre><code><xmp>
+<pre><code>
 @app.route("/contact/")
 def MaPremiereAPI():
     return "<h2>Ma page de contact</h2>"
-</xmp></code></pre>
+</code></pre>
 Remarque importante : Ce code est à ajouter après la ligne "app = Flask(__name__)" qui est le début de votre programme et avant le bloc "if __name__ == "__main__" à la fin du fichier.
 <b>Attention l'indentation est très importante en Python.</b>
 </p>
@@ -36,7 +36,7 @@ Vous observerez que nous utilisons une API gratuite fourni par Openweathermap. C
 <p>Ce qui nous intéresse à présent, c'est extraire la valeur de [dt] (c'est à dire les dates) et les valeurs stockées dans la clé [temp][day], c'est à dire les températures du jour.</p>
 <p>A noter que les dates ici sont au format "Timestamp". C'est à dire que la donnée est le nombre de secondes depuis le 1 janvier 2000 (un légacy d'UNIX). Les températures sont stockées au format Kelvin (il faudra donc les convertir en °C).</p> 
 <p>Vous allez à présent créer une nouvelle route "/paris/" dans votre application Python pour filtrer l'API d'Openweathermap et extraire uniquement les dates et température du jour. Ci-dessous la route à ajouter dans votre application.
-<pre><code><xmp>
+<pre><code>
 @app.route('/paris/')
 def meteo():
     response = urlopen('https://api.openweathermap.org/data/2.5/forecast/daily?q=Paris,fr&cnt=16&appid=bd5e378503939ddaee76f12ad7a97608')
@@ -48,7 +48,7 @@ def meteo():
         temp_day_value = list_element.get('temp', {}).get('day') - 273.15 # Conversion de Kelvin en °c 
         results.append({'Jour': dt_value, 'temp': temp_day_value})
     return jsonify(results=results)
-</xmp></code></pre></p>
+</code></pre></p>
 <p>Testez cette nouvelle route dans votre navigateur et observer le résultat.</p>    
 <p>- - - - - </p>
 <b>Exercice 3 Bis : Les fichiers HTML</b>
@@ -58,7 +58,7 @@ Depuis GitHUB, nous allons donc créer et déposer dans le répertoire "template
 </p>
 <p>Etape 1.1 : Création du fichier graphique.html
 Dans votre répertoire templates, créez un fichier graphique.html contenant le code suivant :
-<pre><code><xmp>
+<pre><code>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -68,15 +68,15 @@ Dans votre répertoire templates, créez un fichier graphique.html contenant le 
     <h2>Mon Graphique</h2>
 </body>
 </html>
-</xmp></code></pre></p>
+</code></pre></p>
 <p>Etape 1.2 : Création d'une nouvelle route
 Créez à présent une nouvelle route afin de pouvoir consulter votre fichier HTML depuis votre site en ligne.
 Pour cela, ajouter le code ci-dessous dans votre fichier __init__.py :
-<pre><code><xmp>
+<pre><code>
 @app.route("/rapport/")
 def mongraphique():
     return render_template("graphique.html")
-</xmp></code></pre></p>
+</code></pre></p>
 <p>Notions acquises dans cet exercice : Nous avons vu lors de cet exercice comment créer et où déposer les fichiers HTML lorsque l'on utise le Framework Flask.
 Nous avons également découvert que les Framework (cadre de travail) nous imposent une structure de travail où chaque élément doit être à sa place.
 </p>
@@ -86,7 +86,7 @@ Nous avons également découvert que les Framework (cadre de travail) nous impos
 Pour cela, nous devons utiliser les données de notre nouvelle API /rapport/ et les injecter dans notre fichier graphique.html.
 Nous allons utiliser une bibliothèque open source fournie par Google pour créer ce graphique.</p>
 <p>Modifier votre précédent fichier graphique.html dans GitHUB et remplacer son code par celui-ci :
-<pre><code><xmp>
+<pre><code>
 <html>
   <head>
     <meta charset="UTF-8" />
