@@ -12,7 +12,7 @@ def hello_world():
 @app.route("/contact/")
 def MaPremiereAPI():
     return render_template("contact.html")
-@app.route("/paris/")
+@app.route('/paris/')
 def meteo():
     response = urlopen('https://api.openweathermap.org/data/2.5/forecast/daily?q=Paris,fr&cnt=16&appid=bd5e378503939ddaee76f12ad7a97608')
     raw_content = response.read()
@@ -20,8 +20,9 @@ def meteo():
     results = []
     for list_element in json_content.get('list', []):
         dt_value = list_element.get('dt')
-        temp_day_value = list_element.get('main', {}).get('temp') - 273.15 # Conversion de Kelvin en °c
+        temp_day_value = list_element.get('temp', {}).get('day') - 273.15 # Conversion de Kelvin en °c 
         results.append({'Jour': dt_value, 'temp': temp_day_value})
+    return jsonify(results=results)
 @app.route("/rapport/")
 def mongraphique():
     return render_template("graphique.html")
